@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+frontend/dist/
+frontend/playwright-report/
+frontend/test-results/
+
+# Go
+**/bin/
+**/*.exe
+**/coverage.out
+**/vendor/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Env / secrets
+.env
+.env.local
+*.pem
+
+# Proto generated (committed for simpler Docker builds; ignore local regen noise)
+# keep gen in repo for docker builds without buf
+
+# Docker volumes
+.pgdata/
