@@ -1,0 +1,14 @@
+FROM golang:1.22-alpine AS build
+WORKDIR /src
+COPY services/orbit-service ./services/orbit-service
+COPY services/planning-service/go.mod services/planning-service/go.sum* ./services/planning-service/
+WORKDIR /src/services/planning-service
+RUN go mod download
+COPY services/planning-service/ ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o /out/planning-service ./cmd/server
+
+FROM alpine:3.20
+RUN apk add --no-cache ca-certificates
+COPY --from=build /out/planning-service /usr/local/bin/planning-service
+EXPOSE 8081
+ENTRYPOINT ["planning-service"]

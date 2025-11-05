@@ -1,0 +1,89 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: orbital
+      POSTGRES_PASSWORD: orbital
+      POSTGRES_DB: orbitalops
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U orbital -d orbitalops"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    image: migrate/migrate:v4.17.1
+    volumes:
+      - ./migrations:/migrations
+    command:
+      [
+        "-path",
+        "/migrations",
+        "-database",
+        "postgres://orbital:orbital@postgres:5432/orbitalops?sslmode=disable",
+        "up",
+      ]
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  orbit-service:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.orbit
+    ports:
+      - "50051:50051"
+      - "8082:8082"
+    environment:
+      ORBIT_GRPC_ADDR: ":50051"
+      ORBIT_HTTP_ADDR: ":8082"
+      LOG_LEVEL: info
+
+  planning-service:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.planning
+    ports:
+      - "8081:8081"
+    environment:
+      HTTP_ADDR: ":8081"
+      DATABASE_URL: postgres://orbital:orbital@postgres:5432/orbitalops?sslmode=disable
+      ORBIT_GRPC_ADDR: orbit-service:50051
+      LOG_LEVEL: info
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      orbit-service:
+        condition: service_started
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.gateway
+    ports:
+      - "8080:8080"
+    environment:
+      HTTP_ADDR: ":8080"
+      PLANNING_URL: http://planning-service:8081
+      ORBIT_GRPC_ADDR: orbit-service:50051
+      CORS_ORIGINS: http://localhost:5173
+      LOG_LEVEL: info
+    depends_on:
+      - planning-service
+      - orbit-service
+
+  frontend:
+    build:
+      context: .
+      dockerfile: deploy/docker/Dockerfile.frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+
+volumes:
+  pgdata:
