@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+package orbit.v1;
+
+option go_package = "github.com/nahouchimohamed/orbital-ops-console/services/orbit-service/api/orbit/v1;orbitv1";
+
+service OrbitService {
+  // Propagate a TLE over a time window and return geodetic samples.
+  rpc Propagate(PropagateRequest) returns (PropagateResponse);
+
+  // Compute AOS/LOS pass windows for a ground station.
+  rpc FindPasses(FindPassesRequest) returns (FindPassesResponse);
+}
+
+message TLE {
+  string line1 = 1;
+  string line2 = 2;
+  string name = 3;
+}
+
+message PropagateRequest {
+  TLE tle = 1;
+  string start_time_rfc3339 = 2;
+  string end_time_rfc3339 = 3;
+  int32 step_seconds = 4;
+}
+
+message GeodeticSample {
+  string time_rfc3339 = 1;
+  double latitude_deg = 2;
+  double longitude_deg = 3;
+  double altitude_km = 4;
+}
+
+message PropagateResponse {
+  repeated GeodeticSample samples = 1;
+}
+
+message GroundStation {
+  string name = 1;
+  double latitude_deg = 2;
+  double longitude_deg = 3;
+  double altitude_m = 4;
+  double min_elevation_deg = 5;
+}
+
+message FindPassesRequest {
+  TLE tle = 1;
+  GroundStation station = 2;
+  string start_time_rfc3339 = 3;
+  string end_time_rfc3339 = 4;
+  int32 step_seconds = 5;
+}
+
+message PassWindow {
+  string aos_rfc3339 = 1;
+  string los_rfc3339 = 2;
+  double max_elevation_deg = 3;
+  string max_elevation_time_rfc3339 = 4;
+}
+
+message FindPassesResponse {
+  repeated PassWindow passes = 1;
+}
