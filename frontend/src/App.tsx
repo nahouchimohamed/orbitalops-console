@@ -11,6 +11,7 @@ import {
 } from "./api";
 import { Dashboard } from "./components/Dashboard";
 import { GroundTrackMap } from "./components/GroundTrackMap";
+import { filterPassesByMinEl, sortPassesByAOS } from "./passFilters";
 
 type View = "dashboard" | "ops";
 
@@ -26,6 +27,7 @@ export default function App() {
   const [plans, setPlans] = useState<ImagingPlan[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [minElevation, setMinElevation] = useState(5);
 
   const loadBase = useCallback(async () => {
     try {
@@ -76,6 +78,11 @@ export default function App() {
   }, [selectedStation]);
 
   const healthy = Boolean(status?.planning);
+
+  const visiblePasses = useMemo(
+    () => sortPassesByAOS(filterPassesByMinEl(passes, minElevation)),
+    [passes, minElevation],
+  );
 
   const exportJSON = useMemo(() => {
     const selected = (plans ?? []).slice(0, 2);
@@ -188,10 +195,10 @@ export default function App() {
           <aside className="panel">
             <h2>AOS / LOS passes</h2>
             <div className="timeline">
-              {(passes ?? []).length === 0 && (
+              {visiblePasses.length === 0 && (
                 <div className="timeline-item">No passes in the next 24h window.</div>
               )}
-              {(passes ?? []).slice(0, 8).map((p, idx) => (
+              {visiblePasses.slice(0, 8).map((p, idx) => (
                 <div className="timeline-item" key={`${p.satellite_id}-${p.aos}-${idx}`}>
                   <strong>{p.satellite_name}</strong>
                   <div className="meta">
