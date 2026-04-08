@@ -531,3 +531,16 @@ pre.cmd {
     grid-template-columns: 1fr;
   }
 }
+
+.filter-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.filter-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}

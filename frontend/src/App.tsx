@@ -194,6 +194,16 @@ export default function App() {
 
           <aside className="panel">
             <h2>AOS / LOS passes</h2>
+            <label className="filter-row">
+              Min elevation {minElevation}°
+              <input
+                type="range"
+                min={0}
+                max={40}
+                value={minElevation}
+                onChange={(e) => setMinElevation(Number(e.target.value))}
+              />
+            </label>
             <div className="timeline">
               {visiblePasses.length === 0 && (
                 <div className="timeline-item">No passes in the next 24h window.</div>
