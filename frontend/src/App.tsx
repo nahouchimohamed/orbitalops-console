@@ -11,7 +11,7 @@ import {
 } from "./api";
 import { Dashboard } from "./components/Dashboard";
 import { GroundTrackMap } from "./components/GroundTrackMap";
-import { filterPassesByMinEl, sortPassesByAOS } from "./passFilters";
+import { filterPassesByMinEl, sortPassesByAOS, sortPassesByElevation } from "./passFilters";
 
 type View = "dashboard" | "ops";
 
@@ -28,6 +28,7 @@ export default function App() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [minElevation, setMinElevation] = useState(5);
+  const [sortMode, setSortMode] = useState<"aos" | "elevation">("aos");
 
   const loadBase = useCallback(async () => {
     try {
@@ -79,10 +80,10 @@ export default function App() {
 
   const healthy = Boolean(status?.planning);
 
-  const visiblePasses = useMemo(
-    () => sortPassesByAOS(filterPassesByMinEl(passes, minElevation)),
-    [passes, minElevation],
-  );
+  const visiblePasses = useMemo(() => {
+    const filtered = filterPassesByMinEl(passes, minElevation);
+    return sortMode === "elevation" ? sortPassesByElevation(filtered) : sortPassesByAOS(filtered);
+  }, [passes, minElevation, sortMode]);
 
   const exportJSON = useMemo(() => {
     const selected = (plans ?? []).slice(0, 2);
@@ -204,6 +205,22 @@ export default function App() {
                 onChange={(e) => setMinElevation(Number(e.target.value))}
               />
             </label>
+            <div className="btn-row">
+              <button
+                type="button"
+                className={sortMode === "aos" ? "ghost nav-active" : "ghost"}
+                onClick={() => setSortMode("aos")}
+              >
+                Sort AOS
+              </button>
+              <button
+                type="button"
+                className={sortMode === "elevation" ? "ghost nav-active" : "ghost"}
+                onClick={() => setSortMode("elevation")}
+              >
+                Sort elevation
+              </button>
+            </div>
             <div className="timeline">
               {visiblePasses.length === 0 && (
                 <div className="timeline-item">No passes in the next 24h window.</div>
