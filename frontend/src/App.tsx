@@ -12,6 +12,7 @@ import {
 import { Dashboard } from "./components/Dashboard";
 import { GroundTrackMap } from "./components/GroundTrackMap";
 import { filterPassesByMinEl, sortPassesByAOS, sortPassesByElevation } from "./passFilters";
+import { passQuality } from "./passQuality";
 
 type View = "dashboard" | "ops";
 
@@ -234,6 +235,10 @@ export default function App() {
                     LOS {new Date(p.los).toUTCString()}
                     <br />
                     max el {p.max_elevation_deg.toFixed(1)}°
+                    {" · "}
+                    <span className={`health-badge ${passQuality(p.max_elevation_deg).className}`}>
+                      {passQuality(p.max_elevation_deg).label}
+                    </span>
                   </div>
                 </div>
               ))}
