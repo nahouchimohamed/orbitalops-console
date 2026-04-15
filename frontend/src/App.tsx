@@ -30,6 +30,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [minElevation, setMinElevation] = useState(5);
   const [sortMode, setSortMode] = useState<"aos" | "elevation">("aos");
+  const [fleetQuery, setFleetQuery] = useState("");
 
   const loadBase = useCallback(async () => {
     try {
@@ -80,6 +81,11 @@ export default function App() {
   }, [selectedStation]);
 
   const healthy = Boolean(status?.planning);
+  const filteredSats = useMemo(() => {
+    const q = fleetQuery.trim().toLowerCase();
+    if (!q) return sats;
+    return sats.filter((s) => s.name.toLowerCase().includes(q) || String(s.norad_id ?? "").includes(q));
+  }, [sats, fleetQuery]);
 
   const visiblePasses = useMemo(() => {
     const filtered = filterPassesByMinEl(passes, minElevation);
@@ -161,8 +167,14 @@ export default function App() {
         <div className="layout">
           <aside className="panel">
             <h2>Fleet</h2>
+            <input
+              className="text-input"
+              placeholder="Search satellites…"
+              value={fleetQuery}
+              onChange={(e) => setFleetQuery(e.target.value)}
+            />
             <div className="list">
-              {sats.map((s) => (
+              {filteredSats.map((s) => (
                 <button
                   key={s.id}
                   className={`list-item ${selectedSat === s.id ? "active" : ""}`}
