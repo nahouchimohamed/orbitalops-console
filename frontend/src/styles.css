@@ -560,3 +560,23 @@ pre.cmd {
   outline: none;
   border-color: var(--accent);
 }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.next-pass-banner {
+  font-size: 0.78rem;
+  color: var(--accent-2);
+  border: 1px solid rgba(92, 224, 178, 0.35);
+  background: rgba(92, 224, 178, 0.08);
+  border-radius: 999px;
+  padding: 0.35rem 0.7rem;
+  max-width: 28rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

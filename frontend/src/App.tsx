@@ -13,6 +13,7 @@ import { Dashboard } from "./components/Dashboard";
 import { GroundTrackMap } from "./components/GroundTrackMap";
 import { filterPassesByMinEl, sortPassesByAOS, sortPassesByElevation } from "./passFilters";
 import { passQuality } from "./passQuality";
+import { nextPass, relativeFromNow } from "./nextPass";
 
 type View = "dashboard" | "ops";
 
@@ -92,6 +93,8 @@ export default function App() {
     return sortMode === "elevation" ? sortPassesByElevation(filtered) : sortPassesByAOS(filtered);
   }, [passes, minElevation, sortMode]);
 
+  const upcoming = useMemo(() => nextPass(visiblePasses), [visiblePasses]);
+
   const exportJSON = useMemo(() => {
     const selected = (plans ?? []).slice(0, 2);
     return JSON.stringify(
@@ -148,9 +151,16 @@ export default function App() {
             Operations
           </button>
         </nav>
-        <div className="status-pill" data-testid="system-status">
-          <span className={`status-dot ${healthy ? "ok" : ""}`} />
-          {healthy ? "Planning + Gateway online" : "Waiting for backend…"}
+        <div className="header-right">
+          {upcoming && (
+            <div className="next-pass-banner">
+              Next {upcoming.satellite_name} → {upcoming.station_name} · {relativeFromNow(upcoming.aos)}
+            </div>
+          )}
+          <div className="status-pill" data-testid="system-status">
+            <span className={`status-dot ${healthy ? "ok" : ""}`} />
+            {healthy ? "Planning + Gateway online" : "Waiting for backend…"}
+          </div>
         </div>
       </header>
 
