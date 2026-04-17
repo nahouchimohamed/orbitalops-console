@@ -164,6 +164,12 @@ export default function App() {
         </div>
       </header>
 
+      {!healthy && (
+        <div className="alert-strip" role="status">
+          Planning service unreachable — pass windows and AOI planning may be stale.
+        </div>
+      )}
+
       {view === "dashboard" ? (
         <Dashboard
           status={status}

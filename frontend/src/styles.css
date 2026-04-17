@@ -580,3 +580,11 @@ pre.cmd {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.alert-strip {
+  padding: 0.55rem 1.25rem;
+  background: rgba(240, 195, 90, 0.12);
+  border-bottom: 1px solid rgba(240, 195, 90, 0.35);
+  color: var(--warn);
+  font-size: 0.85rem;
+}
