@@ -32,6 +32,7 @@ export default function App() {
   const [minElevation, setMinElevation] = useState(5);
   const [sortMode, setSortMode] = useState<"aos" | "elevation">("aos");
   const [fleetQuery, setFleetQuery] = useState("");
+  const [passHours, setPassHours] = useState(24);
 
   const loadBase = useCallback(async () => {
     try {
@@ -74,12 +75,12 @@ export default function App() {
     void (async () => {
       try {
         setError(null);
-        setPasses((await api.passes(selectedStation)) ?? []);
+        setPasses((await api.passes(selectedStation, passHours)) ?? []);
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
       }
     })();
-  }, [selectedStation]);
+  }, [selectedStation, passHours]);
 
   const healthy = Boolean(status?.planning);
   const filteredSats = useMemo(() => {
@@ -224,6 +225,18 @@ export default function App() {
 
           <aside className="panel">
             <h2>AOS / LOS passes</h2>
+            <div className="btn-row">
+              {[12, 24, 48].map((h) => (
+                <button
+                  key={h}
+                  type="button"
+                  className={passHours === h ? "ghost nav-active" : "ghost"}
+                  onClick={() => setPassHours(h)}
+                >
+                  {h}h
+                </button>
+              ))}
+            </div>
             <label className="filter-row">
               Min elevation {minElevation}°
               <input
