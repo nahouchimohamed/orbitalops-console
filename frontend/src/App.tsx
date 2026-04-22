@@ -33,6 +33,7 @@ export default function App() {
   const [sortMode, setSortMode] = useState<"aos" | "elevation">("aos");
   const [fleetQuery, setFleetQuery] = useState("");
   const [passHours, setPassHours] = useState(24);
+  const [trackHours, setTrackHours] = useState(1.5);
 
   const loadBase = useCallback(async () => {
     try {
@@ -63,12 +64,12 @@ export default function App() {
     void (async () => {
       try {
         setError(null);
-        setTrack(await api.groundTrack(selectedSat));
+        setTrack(await api.groundTrack(selectedSat, trackHours));
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
       }
     })();
-  }, [selectedSat]);
+  }, [selectedSat, trackHours]);
 
   useEffect(() => {
     if (!selectedStation) return;
@@ -184,6 +185,17 @@ export default function App() {
         <div className="layout">
           <aside className="panel">
             <h2>Fleet</h2>
+            <label className="filter-row">
+              Track horizon {trackHours.toFixed(1)}h
+              <input
+                type="range"
+                min={0.5}
+                max={6}
+                step={0.5}
+                value={trackHours}
+                onChange={(e) => setTrackHours(Number(e.target.value))}
+              />
+            </label>
             <input
               className="text-input"
               placeholder="Search satellites…"
