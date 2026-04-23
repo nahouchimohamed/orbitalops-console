@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import DeckGL from "@deck.gl/react";
 import { PathLayer, ScatterplotLayer } from "@deck.gl/layers";
+// station horizon visualized as translucent scatter radius
 import type { Layer } from "@deck.gl/core";
 import { Map } from "react-map-gl/maplibre";
 import maplibregl from "maplibre-gl";
@@ -52,6 +53,22 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
           })
         : null;
 
+    const selected = stations.find((s) => s.id === selectedStationId);
+    const horizon = selected
+      ? new ScatterplotLayer({
+          id: "station-horizon",
+          data: [selected],
+          getPosition: (d: GroundStation) => [d.longitude, d.latitude] as [number, number],
+          getFillColor: [240, 195, 90, 40],
+          getLineColor: [240, 195, 90, 180],
+          lineWidthMinPixels: 1,
+          stroked: true,
+          filled: true,
+          getRadius: 450000,
+          radiusMinPixels: 18,
+        })
+      : null;
+
     const gs = new ScatterplotLayer({
       id: "ground-stations",
       data: stations,
@@ -62,7 +79,7 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
       radiusMinPixels: 6,
     });
 
-    return [path, satPoint, gs].filter(Boolean) as Layer[];
+    return [horizon, path, satPoint, gs].filter(Boolean) as Layer[];
   }, [track, stations, selectedStationId]);
 
   return (
