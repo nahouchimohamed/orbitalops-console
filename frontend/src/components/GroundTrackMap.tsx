@@ -34,9 +34,11 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
               },
             ],
             getPath: (d: { path: [number, number][] }) => d.path,
-            getColor: [61, 184, 255, 220],
+            getColor: [61, 184, 255, 230],
             widthMinPixels: 2,
-            getWidth: 3,
+            getWidth: 3.5,
+            capRounded: true,
+            jointRounded: true,
           })
         : null;
 
@@ -48,8 +50,11 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
             getPosition: (d: { longitude: number; latitude: number }) =>
               [d.longitude, d.latitude] as [number, number],
             getFillColor: [92, 224, 178, 255],
-            getRadius: 60000,
-            radiusMinPixels: 5,
+            getLineColor: [11, 18, 32, 255],
+            lineWidthMinPixels: 1,
+            stroked: true,
+            getRadius: 70000,
+            radiusMinPixels: 6,
           })
         : null;
 
