@@ -34,6 +34,7 @@ export default function App() {
   const [fleetQuery, setFleetQuery] = useState("");
   const [passHours, setPassHours] = useState(24);
   const [trackHours, setTrackHours] = useState(1.5);
+  const [priority, setPriority] = useState(2);
 
   const loadBase = useCallback(async () => {
     try {
@@ -120,7 +121,7 @@ export default function App() {
       const res = await api.createRequest({
         name: `AOI-Jakarta-${new Date().toISOString().slice(0, 16)}`,
         aoi_geojson: jakartaAOI(),
-        priority: 2,
+        priority,
       });
       setPlans((prev) => [...(res.plans ?? []), ...prev]);
     } catch (e) {
@@ -298,6 +299,19 @@ export default function App() {
             </div>
 
             <h2 style={{ marginTop: "1.25rem" }}>Observation planning</h2>
+            <label className="filter-row">
+              Priority
+              <select
+                className="text-input"
+                value={priority}
+                onChange={(e) => setPriority(Number(e.target.value))}
+              >
+                <option value={1}>1 — critical</option>
+                <option value={2}>2 — high</option>
+                <option value={3}>3 — normal</option>
+                <option value={4}>4 — background</option>
+              </select>
+            </label>
             <div className="btn-row">
               <button className="primary" disabled={busy} onClick={() => void createObservation()}>
                 {busy ? "Planning…" : "Request Jakarta AOI"}
