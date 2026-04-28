@@ -128,6 +128,7 @@ func (s *PlanningService) CreateRequestAndPlan(ctx context.Context, in CreateReq
 	if len(in.AOI) == 0 {
 		return nil, nil, fmt.Errorf("aoi_geojson required")
 	}
+	in.Priority = domain.ClampPriority(in.Priority)
 	req, err := s.repo.CreateObservationRequest(ctx, domain.ObservationRequest{
 		Name:     in.Name,
 		AOI:      in.AOI,
