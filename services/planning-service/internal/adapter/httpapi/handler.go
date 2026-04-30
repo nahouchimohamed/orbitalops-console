@@ -165,5 +165,32 @@ func writeJSON(w http.ResponseWriter, status int, v any) {
 }
 
 func writeErr(w http.ResponseWriter, err error) {
-	writeJSON(w, http.StatusInternalServerError, map[string]string{"error": err.Error()})
+	msg := err.Error()
+	status := http.StatusInternalServerError
+	if containsAny(msg, "required", "invalid", "too large", "AOI") {
+		status = http.StatusBadRequest
+	}
+	writeJSON(w, status, map[string]string{"error": msg})
+}
+
+func containsAny(s string, parts ...string) bool {
+	for _, p := range parts {
+		if len(p) > 0 && (s == p || len(s) >= len(p) && containsFold(s, p)) {
+			return true
+		}
+	}
+	return false
+}
+
+func containsFold(s, sub string) bool {
+	return len(sub) == 0 || (len(s) >= len(sub) && (stringIndex(s, sub) >= 0))
+}
+
+func stringIndex(s, sub string) int {
+	for i := 0; i+len(sub) <= len(s); i++ {
+		if s[i:i+len(sub)] == sub {
+			return i
+		}
+	}
+	return -1
 }
