@@ -231,7 +231,11 @@ export default function App() {
                 </button>
               ))}
             </div>
-            {error && <div className="error">{error}</div>}
+            {error && (
+              <div className="error" role="alert">
+                {error}
+              </div>
+            )}
           </aside>
 
           <GroundTrackMap track={track} stations={stations} selectedStationId={selectedStation} />
