@@ -14,6 +14,7 @@ import { GroundTrackMap } from "./components/GroundTrackMap";
 import { filterPassesByMinEl, sortPassesByAOS, sortPassesByElevation } from "./passFilters";
 import { passQuality } from "./passQuality";
 import { nextPass, relativeFromNow } from "./nextPass";
+import { downloadText, passesToCSV } from "./exportCsv";
 
 type View = "dashboard" | "ops";
 
@@ -278,6 +279,15 @@ export default function App() {
                 onClick={() => setSortMode("elevation")}
               >
                 Sort elevation
+              </button>
+              <button
+                type="button"
+                className="ghost"
+                onClick={() =>
+                  downloadText(`passes-${passHours}h.csv`, passesToCSV(visiblePasses))
+                }
+              >
+                Export CSV
               </button>
             </div>
             <div className="timeline">
