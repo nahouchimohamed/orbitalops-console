@@ -349,6 +349,15 @@ export default function App() {
             </div>
 
             <h2 style={{ marginTop: "1.25rem" }}>Command sequence export</h2>
+            <div className="btn-row">
+              <button
+                type="button"
+                className="ghost"
+                onClick={() => downloadText("command-sequence.json", exportJSON, "application/json")}
+              >
+                Download JSON
+              </button>
+            </div>
             <pre className="cmd">{exportJSON}</pre>
           </aside>
         </div>
