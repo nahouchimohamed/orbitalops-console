@@ -595,3 +595,14 @@ pre.cmd {
   border-radius: 8px;
   padding: 0.55rem 0.7rem;
 }
+
+.next-aos-card {
+  border: 1px solid rgba(61, 184, 255, 0.45);
+  border-radius: 10px;
+  background: linear-gradient(120deg, rgba(61, 184, 255, 0.12), rgba(18, 26, 43, 0.92));
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}

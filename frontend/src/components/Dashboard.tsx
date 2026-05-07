@@ -5,6 +5,7 @@ import type {
   Satellite,
   SystemStatus,
 } from "../api";
+import { nextPass, relativeFromNow } from "../nextPass";
 import {
   ContactGantt,
   ContactLoadHistogram,
@@ -40,6 +41,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: 
   const health = statusLabel(status);
   const allPasses = passes ?? [];
   const upcoming = allPasses.slice(0, 5);
+  const next = nextPass(allPasses);
   const recentPlans = (plans ?? []).slice(0, 5);
   const plannedCount = (plans ?? []).filter(
     (p) => p.status === "planned" || p.status === "scheduled",
@@ -63,6 +65,18 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: 
           Open operations map
         </button>
       </div>
+
+      {next && (
+        <div className="next-aos-card">
+          <span className="kpi-label">Next contact</span>
+          <strong>
+            {next.satellite_name} → {next.station_name}
+          </strong>
+          <span className="kpi-meta">
+            {relativeFromNow(next.aos)} · max el {next.max_elevation_deg.toFixed(1)}°
+          </span>
+        </div>
+      )}
 
       <div className="kpi-grid">
         <div className="kpi-card">
