@@ -6,6 +6,7 @@ import type {
   SystemStatus,
 } from "../api";
 import { nextPass, relativeFromNow } from "../nextPass";
+import { filterPassesByMinEl } from "../passFilters";
 import {
   ContactGantt,
   ContactLoadHistogram,
@@ -22,6 +23,7 @@ type Props = {
   passes: PassWindow[];
   plans: ImagingPlan[];
   onOpenOps: () => void;
+  minElevation?: number;
 };
 
 function formatDuration(aos: string, los: string): string {
@@ -37,9 +39,9 @@ function statusLabel(status: SystemStatus | null): { label: string; ok: boolean 
   return { label: ok ? "Nominal" : "Degraded", ok };
 }
 
-export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: Props) {
+export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, minElevation = 0 }: Props) {
   const health = statusLabel(status);
-  const allPasses = passes ?? [];
+  const allPasses = filterPassesByMinEl(passes ?? [], minElevation);
   const upcoming = allPasses.slice(0, 5);
   const next = nextPass(allPasses);
   const recentPlans = (plans ?? []).slice(0, 5);

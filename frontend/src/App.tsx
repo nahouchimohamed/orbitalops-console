@@ -181,6 +181,7 @@ export default function App() {
           stations={stations}
           passes={passes}
           plans={plans}
+          minElevation={minElevation}
           onOpenOps={() => setView("ops")}
         />
       ) : (
