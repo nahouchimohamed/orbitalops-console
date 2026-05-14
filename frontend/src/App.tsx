@@ -182,6 +182,7 @@ export default function App() {
           passes={passes}
           plans={plans}
           minElevation={minElevation}
+          onMinElevationChange={setMinElevation}
           onOpenOps={() => setView("ops")}
         />
       ) : (

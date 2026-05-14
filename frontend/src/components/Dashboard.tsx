@@ -24,6 +24,7 @@ type Props = {
   plans: ImagingPlan[];
   onOpenOps: () => void;
   minElevation?: number;
+  onMinElevationChange?: (v: number) => void;
 };
 
 function formatDuration(aos: string, los: string): string {
@@ -39,7 +40,7 @@ function statusLabel(status: SystemStatus | null): { label: string; ok: boolean 
   return { label: ok ? "Nominal" : "Degraded", ok };
 }
 
-export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, minElevation = 0 }: Props) {
+export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, minElevation = 0, onMinElevationChange }: Props) {
   const health = statusLabel(status);
   const allPasses = filterPassesByMinEl(passes ?? [], minElevation);
   const upcoming = allPasses.slice(0, 5);
@@ -63,9 +64,21 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
             planning and orbit services.
           </p>
         </div>
-        <button type="button" className="primary" onClick={onOpenOps}>
-          Open operations map
-        </button>
+        <div className="dash-hero-actions">
+          <label className="filter-row dash-filter">
+            Chart min el {minElevation}°
+            <input
+              type="range"
+              min={0}
+              max={40}
+              value={minElevation}
+              onChange={(e) => onMinElevationChange?.(Number(e.target.value))}
+            />
+          </label>
+          <button type="button" className="primary" onClick={onOpenOps}>
+            Open operations map
+          </button>
+        </div>
       </div>
 
       {next && (
