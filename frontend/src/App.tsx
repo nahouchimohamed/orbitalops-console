@@ -36,6 +36,7 @@ export default function App() {
   const [passHours, setPassHours] = useState(24);
   const [trackHours, setTrackHours] = useState(1.5);
   const [priority, setPriority] = useState(2);
+  const [planStatusFilter, setPlanStatusFilter] = useState<"all" | "draft" | "planned" | "scheduled">("all");
 
   const loadBase = useCallback(async () => {
     try {
@@ -98,6 +99,10 @@ export default function App() {
   }, [passes, minElevation, sortMode]);
 
   const upcoming = useMemo(() => nextPass(visiblePasses), [visiblePasses]);
+  const visiblePlans = useMemo(() => {
+    if (planStatusFilter === "all") return plans ?? [];
+    return (plans ?? []).filter((p) => p.status === planStatusFilter);
+  }, [plans, planStatusFilter]);
 
   const exportJSON = useMemo(() => {
     const selected = (plans ?? []).slice(0, 2);
@@ -337,8 +342,20 @@ export default function App() {
               </button>
             </div>
 
+            <div className="btn-row">
+              {(["all", "draft", "planned", "scheduled"] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  className={planStatusFilter === s ? "ghost nav-active" : "ghost"}
+                  onClick={() => setPlanStatusFilter(s)}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
             <div className="timeline">
-              {(plans ?? []).slice(0, 6).map((p) => (
+              {visiblePlans.slice(0, 6).map((p) => (
                 <div className="timeline-item" key={p.id}>
                   <strong>
                     {p.satellite_name ?? p.satellite_id.slice(0, 8)} · {p.status}
