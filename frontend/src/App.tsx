@@ -188,6 +188,7 @@ export default function App() {
           plans={plans}
           minElevation={minElevation}
           onMinElevationChange={setMinElevation}
+          planStatusFilter={planStatusFilter}
           onOpenOps={() => setView("ops")}
         />
       ) : (

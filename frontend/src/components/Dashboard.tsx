@@ -25,6 +25,7 @@ type Props = {
   onOpenOps: () => void;
   minElevation?: number;
   onMinElevationChange?: (v: number) => void;
+  planStatusFilter?: string;
 };
 
 function formatDuration(aos: string, los: string): string {
@@ -40,12 +41,16 @@ function statusLabel(status: SystemStatus | null): { label: string; ok: boolean 
   return { label: ok ? "Nominal" : "Degraded", ok };
 }
 
-export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, minElevation = 0, onMinElevationChange }: Props) {
+export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, minElevation = 0, onMinElevationChange, planStatusFilter = "all" }: Props) {
   const health = statusLabel(status);
   const allPasses = filterPassesByMinEl(passes ?? [], minElevation);
   const upcoming = allPasses.slice(0, 5);
   const next = nextPass(allPasses);
-  const recentPlans = (plans ?? []).slice(0, 5);
+  const filteredPlans =
+    planStatusFilter === "all"
+      ? plans ?? []
+      : (plans ?? []).filter((p) => p.status === planStatusFilter);
+  const recentPlans = filteredPlans.slice(0, 5);
   const plannedCount = (plans ?? []).filter(
     (p) => p.status === "planned" || p.status === "scheduled",
   ).length;
