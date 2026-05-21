@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log/slog"
 	"math"
+	"sort"
 	"sync"
 	"time"
 
@@ -112,6 +113,7 @@ func (s *PlanningService) FindPasses(ctx context.Context, stationID uuid.UUID, h
 			return nil, err
 		}
 	}
+	sort.Slice(out, func(i, j int) bool { return out[i].AOS.Before(out[j].AOS) })
 	return out, nil
 }
 
