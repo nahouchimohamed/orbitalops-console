@@ -106,6 +106,7 @@ func (h *Handler) passes(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	hours, _ := strconv.ParseFloat(r.URL.Query().Get("hours"), 64)
+	minEl, _ := strconv.ParseFloat(r.URL.Query().Get("min_elevation"), 64)
 	passes, err := h.svc.FindPasses(r.Context(), id, hours)
 	if err != nil {
 		writeErr(w, err)
@@ -113,6 +114,15 @@ func (h *Handler) passes(w http.ResponseWriter, r *http.Request) {
 	}
 	if passes == nil {
 		passes = []domain.PassWindow{}
+	}
+	if minEl > 0 {
+		filtered := make([]domain.PassWindow, 0, len(passes))
+		for _, p := range passes {
+			if p.MaxElevationDeg >= minEl {
+				filtered = append(filtered, p)
+			}
+		}
+		passes = filtered
 	}
 	writeJSON(w, http.StatusOK, passes)
 }

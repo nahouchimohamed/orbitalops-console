@@ -78,8 +78,10 @@ export const api = {
   stations: () => request<GroundStation[]>("/api/v1/ground-stations"),
   groundTrack: (id: string, hours = 1.5) =>
     request<GroundTrack>(`/api/v1/satellites/${id}/ground-track?hours=${hours}&step_seconds=60`),
-  passes: (stationId: string, hours = 24) =>
-    request<PassWindow[]>(`/api/v1/ground-stations/${stationId}/passes?hours=${hours}`),
+  passes: (stationId: string, hours = 24, minElevation = 0) =>
+    request<PassWindow[]>(
+      `/api/v1/ground-stations/${stationId}/passes?hours=${hours}&min_elevation=${minElevation}`,
+    ),
   plans: () => request<ImagingPlan[]>("/api/v1/plans"),
   createRequest: (body: { name: string; aoi_geojson: object; priority?: number }) =>
     request<{ request: unknown; plans: ImagingPlan[] }>("/api/v1/requests", {

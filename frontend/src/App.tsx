@@ -79,12 +79,12 @@ export default function App() {
     void (async () => {
       try {
         setError(null);
-        setPasses((await api.passes(selectedStation, passHours)) ?? []);
+        setPasses((await api.passes(selectedStation, passHours, minElevation)) ?? []);
       } catch (e) {
         setError(e instanceof Error ? e.message : String(e));
       }
     })();
-  }, [selectedStation, passHours]);
+  }, [selectedStation, passHours, minElevation]);
 
   const healthy = Boolean(status?.planning);
   const filteredSats = useMemo(() => {
