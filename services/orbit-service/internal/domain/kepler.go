@@ -59,6 +59,10 @@ func (p *KeplerPropagator) Propagate(tle TLE, start, end time.Time, step time.Du
 			AltitudeKM: alt,
 		})
 	}
+	for i := range out {
+		out[i].Latitude = ClampLatDeg(out[i].Latitude)
+		out[i].Longitude = WrapLonDeg(out[i].Longitude)
+	}
 	return out, nil
 }
 
