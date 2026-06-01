@@ -63,6 +63,19 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      if (e.key === "d") setView("dashboard");
+      if (e.key === "o") setView("ops");
+      if (e.key === "r") void loadBase();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [loadBase]);
+
+  useEffect(() => {
     if (!selectedSat) return;
     void (async () => {
       try {
