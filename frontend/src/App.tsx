@@ -156,6 +156,7 @@ export default function App() {
         <div className="brand">
           <h1>OrbitalOps Console</h1>
           <span>Spacecraft control lite — constellation mission planning</span>
+          <span className="shortcut-hint">Keys: D dashboard · O operations · R refresh</span>
         </div>
         <nav className="view-nav" aria-label="Primary">
           <button

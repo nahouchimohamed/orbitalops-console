@@ -617,3 +617,9 @@ pre.cmd {
   min-width: 160px;
   margin-bottom: 0;
 }
+
+.shortcut-hint {
+  color: var(--muted);
+  font-size: 0.72rem !important;
+  opacity: 0.85;
+}
