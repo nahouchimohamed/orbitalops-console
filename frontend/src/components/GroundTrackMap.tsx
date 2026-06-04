@@ -103,9 +103,11 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
         />
       </DeckGL>
       <div className="map-overlay">
-        {track
-          ? `${track.satellite_name}: ${track.samples.length} track samples`
-          : "Select a satellite to render ground track"}
+        {track && track.samples.length > 1
+          ? `${track.satellite_name}: ${track.samples.length} samples · ${new Date(track.samples[0].time).toUTCString().slice(17, 25)}–${new Date(track.samples[track.samples.length - 1].time).toUTCString().slice(17, 25)} UTC`
+          : track
+            ? `${track.satellite_name}: awaiting samples`
+            : "Select a satellite to render ground track"}
       </div>
     </div>
   );
