@@ -15,6 +15,7 @@ import { filterPassesByMinEl, sortPassesByAOS, sortPassesByElevation } from "./p
 import { passQuality } from "./passQuality";
 import { nextPass, relativeFromNow } from "./nextPass";
 import { downloadText, passesToCSV } from "./exportCsv";
+import { formatDurationMin, formatElevation } from "./format";
 
 type View = "dashboard" | "ops";
 
@@ -322,9 +323,9 @@ export default function App() {
                   <div className="meta">
                     AOS {new Date(p.aos).toUTCString()}
                     <br />
-                    LOS {new Date(p.los).toUTCString()}
+                    LOS {new Date(p.los).toUTCString()} · {formatDurationMin(p.aos, p.los)}
                     <br />
-                    max el {p.max_elevation_deg.toFixed(1)}°
+                    max el {formatElevation(p.max_elevation_deg)}
                     {" · "}
                     <span className={`health-badge ${passQuality(p.max_elevation_deg).className}`}>
                       {passQuality(p.max_elevation_deg).label}
