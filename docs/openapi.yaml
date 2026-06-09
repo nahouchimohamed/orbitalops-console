@@ -1,0 +1,93 @@
+openapi: 3.0.3
+info:
+  title: OrbitalOps Console API
+  version: 0.1.0
+  description: Gateway/planning REST surface for constellation mission planning.
+servers:
+  - url: http://localhost:8080
+paths:
+  /healthz:
+    get:
+      summary: Gateway liveness
+      responses:
+        "200":
+          description: OK
+  /api/v1/system/status:
+    get:
+      summary: Aggregated dependency status
+      responses:
+        "200":
+          description: Status payload
+  /api/v1/satellites:
+    get:
+      summary: List satellites
+      responses:
+        "200":
+          description: Satellite fleet
+  /api/v1/ground-stations:
+    get:
+      summary: List ground stations
+      responses:
+        "200":
+          description: Ground stations
+  /api/v1/satellites/{id}/ground-track:
+    get:
+      summary: Predicted ground track
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - in: query
+          name: hours
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Track samples
+  /api/v1/ground-stations/{id}/passes:
+    get:
+      summary: AOS/LOS pass windows
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Pass list
+  /api/v1/requests:
+    get:
+      summary: List observation requests
+      responses:
+        "200":
+          description: Requests
+    post:
+      summary: Create observation request and draft plans
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, aoi_geojson]
+              properties:
+                name:
+                  type: string
+                priority:
+                  type: integer
+                aoi_geojson:
+                  type: object
+      responses:
+        "201":
+          description: Created
+  /api/v1/plans:
+    get:
+      summary: List imaging plans
+      responses:
+        "200":
+          description: Plans
