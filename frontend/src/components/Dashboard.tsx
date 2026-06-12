@@ -7,6 +7,7 @@ import type {
 } from "../api";
 import { nextPass, relativeFromNow } from "../nextPass";
 import { filterPassesByMinEl } from "../passFilters";
+import { formatElevation } from "../format";
 import {
   ContactGantt,
   ContactLoadHistogram,
@@ -93,7 +94,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
             {next.satellite_name} → {next.station_name}
           </strong>
           <span className="kpi-meta">
-            {relativeFromNow(next.aos)} · max el {next.max_elevation_deg.toFixed(1)}°
+            {relativeFromNow(next.aos)} · max el {formatElevation(next.max_elevation_deg)}
           </span>
         </div>
       )}
@@ -195,7 +196,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
                 <div className="meta">
                   AOS {new Date(p.aos).toUTCString()}
                   <br />
-                  Duration {formatDuration(p.aos, p.los)} · max el {p.max_elevation_deg.toFixed(1)}°
+                  Duration {formatDuration(p.aos, p.los)} · max el {formatElevation(p.max_elevation_deg)}
                 </div>
               </div>
             ))}
