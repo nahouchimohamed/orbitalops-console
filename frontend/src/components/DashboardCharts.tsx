@@ -1,4 +1,5 @@
 import type { ImagingPlan, PassWindow, Satellite, GroundStation } from "../api";
+import { passQuality } from "../passQuality";
 
 function durationMinutes(aos: string, los: string): number {
   const ms = new Date(los).getTime() - new Date(aos).getTime();
@@ -41,7 +42,19 @@ export function ElevationBars({ passes }: { passes: PassWindow[] }) {
               {label.length > 16 ? `${label.slice(0, 15)}…` : label}
             </text>
             <rect x={left} y={y + 2} width={barW} height={18} rx={4} className="chart-track" />
-            <rect x={left} y={y + 2} width={Math.max(w, 2)} height={18} rx={4} className="chart-bar-accent" />
+            <rect
+              x={left}
+              y={y + 2}
+              width={Math.max(w, 2)}
+              height={18}
+              rx={4}
+              className={
+                passQuality(p.max_elevation_deg).label === "excellent" ||
+                passQuality(p.max_elevation_deg).label === "good"
+                  ? "chart-bar-teal"
+                  : "chart-bar-accent"
+              }
+            />
             <text x={left + w + 6} y={y + 15} className="chart-value">
               {p.max_elevation_deg.toFixed(0)}°
             </text>
