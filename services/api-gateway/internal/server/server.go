@@ -77,15 +77,18 @@ func New(cfg Config, logger *slog.Logger) (http.Handler, func(), error) {
 	r.Get("/api/v1/system/status", func(w http.ResponseWriter, r *http.Request) {
 		client := &http.Client{Timeout: 2 * time.Second}
 		planningOK := false
+		start := time.Now()
 		if resp, err := client.Get(cfg.PlanningURL + "/healthz"); err == nil {
 			planningOK = resp.StatusCode == 200
 			_ = resp.Body.Close()
 		}
+		planningMS := time.Since(start).Milliseconds()
 		writeJSON(w, http.StatusOK, map[string]any{
-			"gateway":  "ok",
-			"planning": planningOK,
-			"orbit":    conn.GetState().String(),
-			"time":     time.Now().UTC(),
+			"gateway":             "ok",
+			"planning":            planningOK,
+			"orbit":               conn.GetState().String(),
+			"planning_latency_ms": planningMS,
+			"time":                time.Now().UTC(),
 		})
 	})
 

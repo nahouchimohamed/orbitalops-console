@@ -70,6 +70,7 @@ export type SystemStatus = {
   planning: boolean;
   orbit: string;
   time: string;
+  planning_latency_ms?: number;
 };
 
 export const api = {
