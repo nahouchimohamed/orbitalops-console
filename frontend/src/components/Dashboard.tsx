@@ -174,6 +174,12 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
               <span className="health-badge ok">{status?.orbit ?? "unknown"}</span>
             </div>
             <div className="health-row">
+              <span>Planning latency</span>
+              <span className="kpi-meta">
+                {status?.planning_latency_ms != null ? `${status.planning_latency_ms} ms` : "—"}
+              </span>
+            </div>
+            <div className="health-row">
               <span>Last status sync</span>
               <span className="kpi-meta">
                 {status?.time ? new Date(status.time).toUTCString() : "—"}
