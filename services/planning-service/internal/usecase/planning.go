@@ -169,6 +169,17 @@ func (s *PlanningService) CreateRequestAndPlan(ctx context.Context, in CreateReq
 			{Time: window.end.Format(time.RFC3339), Command: "SAR_IMAGING_STOP", Args: map[string]any{}},
 			{Time: window.end.Add(1 * time.Minute).Format(time.RFC3339), Command: "PAYLOAD_SAFE", Args: map[string]any{}},
 		}
+		conflict := false
+		for _, existing := range plans {
+			if existing.SatelliteID == sat.ID &&
+				domain.WindowsOverlap(existing.StartTime, existing.EndTime, window.start, window.end) {
+				conflict = true
+				break
+			}
+		}
+		if conflict {
+			continue
+		}
 		plan, err := s.repo.CreateImagingPlan(ctx, domain.ImagingPlan{
 			RequestID:       req.ID,
 			SatelliteID:     sat.ID,
