@@ -64,6 +64,13 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    const id = window.setInterval(() => {
+      void api.status().then(setStatus).catch(() => undefined);
+    }, 30000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target instanceof HTMLTextAreaElement) {
         return;
