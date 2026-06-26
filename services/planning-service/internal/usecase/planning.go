@@ -124,6 +124,7 @@ type CreateRequestInput struct {
 }
 
 func (s *PlanningService) CreateRequestAndPlan(ctx context.Context, in CreateRequestInput) (*domain.ObservationRequest, []domain.ImagingPlan, error) {
+	in.Name = domain.SanitizeRequestName(in.Name)
 	if in.Name == "" {
 		return nil, nil, fmt.Errorf("name required")
 	}
