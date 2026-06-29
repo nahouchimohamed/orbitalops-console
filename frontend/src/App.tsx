@@ -235,6 +235,9 @@ export default function App() {
               onChange={(e) => setFleetQuery(e.target.value)}
             />
             <div className="list">
+              {filteredSats.length === 0 && (
+                <div className="timeline-item">No satellites match “{fleetQuery}”.</div>
+              )}
               {filteredSats.map((s) => (
                 <button
                   key={s.id}
