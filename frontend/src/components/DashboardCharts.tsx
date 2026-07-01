@@ -86,7 +86,7 @@ export function ContactLoadHistogram({ passes }: { passes: PassWindow[] }) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img" aria-label="Contact load by UTC hour">
       <text x={padL} y={14} className="chart-axis-label">
-        Contacts by UTC hour · peak {peak}
+        Contacts by UTC hour · peak {peak} at {String(counts.indexOf(peak)).padStart(2, "0")}z
       </text>
       {[0, 0.5, 1].map((t) => {
         const y = padT + plotH * (1 - t);
