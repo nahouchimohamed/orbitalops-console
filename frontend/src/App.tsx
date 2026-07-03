@@ -25,7 +25,9 @@ export default function App() {
   const [sats, setSats] = useState<Satellite[]>([]);
   const [stations, setStations] = useState<GroundStation[]>([]);
   const [selectedSat, setSelectedSat] = useState<string | null>(null);
-  const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [selectedStation, setSelectedStation] = useState<string | null>(() =>
+    localStorage.getItem("orbitalops.lastStation"),
+  );
   const [track, setTrack] = useState<GroundTrack | null>(null);
   const [passes, setPasses] = useState<PassWindow[]>([]);
   const [plans, setPlans] = useState<ImagingPlan[]>([]);
@@ -54,6 +56,7 @@ export default function App() {
       setPlans(existingPlans ?? []);
       if (!selectedSat && satellites?.[0]) setSelectedSat(satellites[0].id);
       if (!selectedStation && gs?.[0]) setSelectedStation(gs[0].id);
+      if (selectedStation) localStorage.setItem("orbitalops.lastStation", selectedStation);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
     }
@@ -256,7 +259,10 @@ export default function App() {
                 <button
                   key={g.id}
                   className={`list-item ${selectedStation === g.id ? "active" : ""}`}
-                  onClick={() => setSelectedStation(g.id)}
+                  onClick={() => {
+                    setSelectedStation(g.id);
+                    localStorage.setItem("orbitalops.lastStation", g.id);
+                  }}
                 >
                   <strong>{g.name}</strong>
                   <small>
