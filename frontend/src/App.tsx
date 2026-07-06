@@ -24,7 +24,9 @@ export default function App() {
   const [status, setStatus] = useState<SystemStatus | null>(null);
   const [sats, setSats] = useState<Satellite[]>([]);
   const [stations, setStations] = useState<GroundStation[]>([]);
-  const [selectedSat, setSelectedSat] = useState<string | null>(null);
+  const [selectedSat, setSelectedSat] = useState<string | null>(() =>
+    localStorage.getItem("orbitalops.lastSat"),
+  );
   const [selectedStation, setSelectedStation] = useState<string | null>(() =>
     localStorage.getItem("orbitalops.lastStation"),
   );
@@ -245,7 +247,10 @@ export default function App() {
                 <button
                   key={s.id}
                   className={`list-item ${selectedSat === s.id ? "active" : ""}`}
-                  onClick={() => setSelectedSat(s.id)}
+                  onClick={() => {
+                    setSelectedSat(s.id);
+                    localStorage.setItem("orbitalops.lastSat", s.id);
+                  }}
                 >
                   <strong>{s.name}</strong>
                   <small>NORAD {s.norad_id ?? "—"}</small>
