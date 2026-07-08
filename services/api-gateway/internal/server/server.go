@@ -94,8 +94,10 @@ func New(cfg Config, logger *slog.Logger) (http.Handler, func(), error) {
 
 	// Proxy planning REST under /api/v1/*
 	r.Handle("/api/v1/*", http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		start := time.Now()
 		logger.Debug("proxy planning", "path", req.URL.Path, "request_id", middleware.GetReqID(req.Context()))
 		proxy.ServeHTTP(w, req)
+		w.Header().Set("X-Response-Time", time.Since(start).String())
 	}))
 
 	// Direct orbit echo for debugging (optional)
