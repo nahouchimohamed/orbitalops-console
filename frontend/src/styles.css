@@ -630,3 +630,11 @@ pre.cmd {
   font-size: 0.72rem !important;
   opacity: 0.85;
 }
+
+.status-dot.ok {
+  animation: pulse-ok 2.4s ease-in-out infinite;
+}
+@keyframes pulse-ok {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(92, 224, 178, 0.55); }
+  50% { box-shadow: 0 0 0 6px rgba(92, 224, 178, 0); }
+}
