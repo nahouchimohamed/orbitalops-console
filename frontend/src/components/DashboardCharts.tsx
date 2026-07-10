@@ -1,5 +1,6 @@
 import type { ImagingPlan, PassWindow, Satellite, GroundStation } from "../api";
 import { passQuality } from "../passQuality";
+import { planStatusColor } from "../planColors";
 
 function durationMinutes(aos: string, los: string): number {
   const ms = new Date(los).getTime() - new Date(aos).getTime();
@@ -197,8 +198,8 @@ export function PlanStatusDonut({ plans }: { plans: ImagingPlan[] }) {
   }
   if (buckets.size === 0) buckets.set("empty", 1);
 
-  const colors = ["#3db8ff", "#5ce0b2", "#f0c35a", "#ff6b7a", "#9aadc8", "#7b8cff"];
   const entries = [...buckets.entries()];
+  const colors = entries.map(([label]) => planStatusColor(label));
   const total = entries.reduce((a, [, n]) => a + n, 0);
   const cx = 78;
   const cy = 78;
