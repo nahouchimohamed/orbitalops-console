@@ -244,7 +244,7 @@ export function PlanStatusDonut({ plans }: { plans: ImagingPlan[] }) {
       </text>
       {entries.map(([label, n], i) => (
         <g key={label} transform={`translate(168 ${28 + i * 22})`}>
-          <rect width={10} height={10} rx={2} fill={colors[i % colors.length]} />
+          <rect width={10} height={10} rx={2} fill={colors[i]} />
           <text x={16} y={9} className="chart-tick">
             {label} · {list.length === 0 ? 0 : n}
           </text>
