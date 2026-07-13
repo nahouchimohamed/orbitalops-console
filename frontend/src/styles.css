@@ -638,3 +638,11 @@ pre.cmd {
   0%, 100% { box-shadow: 0 0 0 0 rgba(92, 224, 178, 0.55); }
   50% { box-shadow: 0 0 0 6px rgba(92, 224, 178, 0); }
 }
+
+button.primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+button.primary:active:not(:disabled) {
+  transform: translateY(0);
+}
