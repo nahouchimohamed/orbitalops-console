@@ -48,8 +48,17 @@ func (s *PlanningService) GroundTrack(ctx context.Context, satID uuid.UUID, hour
 	if hours <= 0 {
 		hours = 1.5
 	}
+	if hours > 24 {
+		hours = 24
+	}
 	if stepSec <= 0 {
 		stepSec = 60
+	}
+	if stepSec < 15 {
+		stepSec = 15
+	}
+	if stepSec > 300 {
+		stepSec = 300
 	}
 	start := time.Now().UTC()
 	end := start.Add(time.Duration(hours * float64(time.Hour)))
