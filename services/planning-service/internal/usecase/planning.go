@@ -85,6 +85,9 @@ func (s *PlanningService) FindPasses(ctx context.Context, stationID uuid.UUID, h
 	if hours <= 0 {
 		hours = 24
 	}
+	if hours > 72 {
+		hours = 72
+	}
 	start := time.Now().UTC()
 	end := start.Add(time.Duration(hours * float64(time.Hour)))
 
