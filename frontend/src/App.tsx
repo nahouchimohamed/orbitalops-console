@@ -287,6 +287,9 @@ export default function App() {
 
           <aside className="panel">
             <h2>AOS / LOS passes</h2>
+            <div className="kpi-meta" style={{ marginBottom: "0.5rem" }}>
+              Showing {visiblePasses.length} of {(passes ?? []).length} contacts
+            </div>
             <div className="btn-row">
               {[12, 24, 48].map((h) => (
                 <button
