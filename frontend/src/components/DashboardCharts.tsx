@@ -30,7 +30,7 @@ export function ElevationBars({ passes }: { passes: PassWindow[] }) {
       </text>
       {rows.length === 0 && (
         <text x={left} y={48} className="chart-empty">
-          No passes to plot
+          No passes above elevation filter
         </text>
       )}
       {rows.map((p, i) => {
@@ -157,7 +157,7 @@ export function ContactGantt({ passes }: { passes: PassWindow[] }) {
       })}
       {rows.length === 0 && (
         <text x={left} y={top + 28} className="chart-empty">
-          No windows scheduled
+          No windows above elevation filter
         </text>
       )}
       {rows.map((p, i) => {
