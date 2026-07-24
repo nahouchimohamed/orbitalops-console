@@ -402,6 +402,8 @@ export default function App() {
                   </strong>
                   <div className="meta">
                     {new Date(p.start_time).toISOString()} → {new Date(p.end_time).toISOString()}
+                    <br />
+                    <span className="health-badge">{p.command_sequence?.length ?? 0} cmds</span>
                   </div>
                 </div>
               ))}
