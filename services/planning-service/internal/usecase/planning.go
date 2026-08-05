@@ -113,6 +113,7 @@ func (s *PlanningService) FindPasses(ctx context.Context, stationID uuid.UUID, h
 				p.SatelliteName = sat.Name
 				p.StationID = station.ID
 				p.StationName = station.Name
+				p.Quality = passQualityTier(p.MaxElevationDeg)
 				out = append(out, p)
 			}
 			mu.Unlock()
@@ -314,4 +315,17 @@ func haversineKM(lat1, lon1, lat2, lon2 float64) float64 {
 	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
 		math.Cos(lat1*math.Pi/180)*math.Cos(lat2*math.Pi/180)*math.Sin(dLon/2)*math.Sin(dLon/2)
 	return 2 * R * math.Asin(math.Sqrt(a))
+}
+
+func passQualityTier(maxElDeg float64) string {
+	switch {
+	case maxElDeg >= 40:
+		return "excellent"
+	case maxElDeg >= 20:
+		return "good"
+	case maxElDeg >= 10:
+		return "fair"
+	default:
+		return "marginal"
+	}
 }

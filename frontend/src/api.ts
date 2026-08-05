@@ -51,6 +51,7 @@ export type PassWindow = {
   los: string;
   max_elevation_deg: number;
   max_elevation_at: string;
+  quality?: string;
 };
 
 export type ImagingPlan = {

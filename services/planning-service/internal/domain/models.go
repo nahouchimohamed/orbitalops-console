@@ -63,6 +63,7 @@ type PassWindow struct {
 	LOS             time.Time `json:"los"`
 	MaxElevationDeg float64   `json:"max_elevation_deg"`
 	MaxElevationAt  time.Time `json:"max_elevation_at"`
+	Quality         string    `json:"quality,omitempty"`
 }
 
 type TrackSample struct {
