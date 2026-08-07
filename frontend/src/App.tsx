@@ -352,7 +352,7 @@ export default function App() {
                     max el {formatElevation(p.max_elevation_deg)}
                     {" · "}
                     <span className={`health-badge ${passQuality(p.max_elevation_deg).className}`}>
-                      {passQuality(p.max_elevation_deg).label}
+                      {p.quality ?? passQuality(p.max_elevation_deg).label}
                     </span>
                   </div>
                 </div>
