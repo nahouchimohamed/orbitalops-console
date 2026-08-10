@@ -647,3 +647,8 @@ button.primary:hover:not(:disabled) {
 button.primary:active:not(:disabled) {
   transform: translateY(0);
 }
+
+@media (min-width: 1200px) {
+  .header { padding: 0.95rem 1.5rem; }
+  .brand h1 { font-size: 1.22rem; }
+}
