@@ -652,3 +652,7 @@ button.primary:active:not(:disabled) {
   .header { padding: 0.95rem 1.5rem; }
   .brand h1 { font-size: 1.22rem; }
 }
+
+.chart-panel:hover {
+  border-color: rgba(61, 184, 255, 0.45);
+}
