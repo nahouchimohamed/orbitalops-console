@@ -88,16 +88,16 @@ export const api = {
     }),
 };
 
-export function tokyoAOI() {
+export function jakartaAOI() {
   return {
     type: "Polygon",
     coordinates: [
       [
-        [139.6, 35.6],
-        [139.85, 35.6],
-        [139.85, 35.85],
-        [139.6, 35.85],
-        [139.6, 35.6],
+        [106.7, -6.35],
+        [106.95, -6.35],
+        [106.95, -6.1],
+        [106.7, -6.1],
+        [106.7, -6.35],
       ],
     ],
   };

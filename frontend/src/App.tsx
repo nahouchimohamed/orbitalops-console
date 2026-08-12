@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   api,
-  tokyoAOI,
+  jakartaAOI,
   type GroundStation,
   type GroundTrack,
   type ImagingPlan,
@@ -94,8 +94,8 @@ export default function App() {
     try {
       setError(null);
       const res = await api.createRequest({
-        name: `AOI-Tokyo-${new Date().toISOString().slice(0, 16)}`,
-        aoi_geojson: tokyoAOI(),
+        name: `AOI-Jakarta-${new Date().toISOString().slice(0, 16)}`,
+        aoi_geojson: jakartaAOI(),
         priority: 2,
       });
       setPlans((prev) => [...(res.plans ?? []), ...prev]);
@@ -178,7 +178,7 @@ export default function App() {
           <h2 style={{ marginTop: "1.25rem" }}>Observation planning</h2>
           <div className="btn-row">
             <button className="primary" disabled={busy} onClick={() => void createObservation()}>
-              {busy ? "Planning…" : "Request Tokyo AOI"}
+              {busy ? "Planning…" : "Request Jakarta AOI"}
             </button>
             <button className="ghost" onClick={() => void loadBase()}>
               Refresh

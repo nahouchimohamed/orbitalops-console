@@ -8,9 +8,9 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import type { GroundStation, GroundTrack } from "../api";
 
 const INITIAL_VIEW = {
-  longitude: 139.7,
-  latitude: 35.7,
-  zoom: 2.2,
+  longitude: 65.0,
+  latitude: 20.0,
+  zoom: 1.6,
   pitch: 0,
   bearing: 0,
 };

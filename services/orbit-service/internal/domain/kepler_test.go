@@ -33,17 +33,17 @@ func TestPropagateProducesSamples(t *testing.T) {
 	}
 }
 
-func TestFindPassesTokyo(t *testing.T) {
+func TestFindPassesSvalbard(t *testing.T) {
 	p := NewKeplerPropagator()
 	tle := TLE{
 		Line1: "1 25544U 98067A   24200.50000000  .00016717  00000-0  10270-3 0  9024",
 		Line2: "2 25544  51.6400 200.0000 0004000  50.0000  80.0000 15.50000000100000",
 	}
 	station := GroundStation{
-		Name:            "Tokyo-GS",
-		LatitudeDeg:     35.6895,
-		LongitudeDeg:    139.6917,
-		AltitudeM:       40,
+		Name:            "Svalbard-GS",
+		LatitudeDeg:     78.2306,
+		LongitudeDeg:    15.3944,
+		AltitudeM:       459,
 		MinElevationDeg: 5,
 	}
 	start := time.Date(2024, 7, 18, 0, 0, 0, 0, time.UTC)
