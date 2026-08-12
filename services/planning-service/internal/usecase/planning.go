@@ -194,12 +194,12 @@ type overflight struct{ start, end time.Time }
 func aoiCentroid(raw json.RawMessage) latLon {
 	var gj map[string]any
 	if err := json.Unmarshal(raw, &gj); err != nil {
-		return latLon{lat: 35.68, lon: 139.69}
+		return latLon{lat: -6.2, lon: 106.85}
 	}
 	// Accept Polygon or Feature/FeatureCollection loosely.
 	coords := extractCoords(gj)
 	if len(coords) == 0 {
-		return latLon{lat: 35.68, lon: 139.69}
+		return latLon{lat: -6.2, lon: 106.85}
 	}
 	var sumLat, sumLon float64
 	for _, c := range coords {

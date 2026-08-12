@@ -32,17 +32,17 @@ INSERT INTO satellites (id, name, norad_id, tle_line1, tle_line2) VALUES
 INSERT INTO ground_stations (id, name, latitude, longitude, altitude_m, min_elevation_deg) VALUES
 (
   '22222222-2222-2222-2222-222222222201',
-  'Tokyo-GS',
-  35.6895,
-  139.6917,
-  40,
+  'Svalbard-GS',
+  78.2306,
+  15.3944,
+  459,
   5
 ),
 (
   '22222222-2222-2222-2222-222222222202',
-  'Singapore-GS',
-  1.3521,
-  103.8198,
-  15,
+  'Perth-GS',
+  -31.9505,
+  115.8605,
+  25,
   5
 );
