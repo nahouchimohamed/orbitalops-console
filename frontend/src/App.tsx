@@ -330,6 +330,7 @@ export default function App() {
               <button
                 type="button"
                 className="ghost"
+                disabled={visiblePasses.length === 0}
                 onClick={() =>
                   downloadText(`passes-${passHours}h.csv`, passesToCSV(visiblePasses))
                 }
