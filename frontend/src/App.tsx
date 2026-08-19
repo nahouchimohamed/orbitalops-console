@@ -415,6 +415,7 @@ export default function App() {
               <button
                 type="button"
                 className="ghost"
+                disabled={(plans ?? []).length === 0}
                 onClick={() => downloadText("command-sequence.json", exportJSON, "application/json")}
               >
                 Download JSON
