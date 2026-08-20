@@ -172,12 +172,12 @@ export function ContactGantt({ passes }: { passes: PassWindow[] }) {
             <text x={left - 8} y={y + 14} textAnchor="end" className="chart-tick">
               {label}
             </text>
-            <rect x={left} y={y + 4} width={plotW} height={16} rx={4} className="chart-track" />
+            <rect x={left} y={y + 3} width={plotW} height={18} rx={4} className="chart-track" />
             <rect
               x={x0}
-              y={y + 4}
-              width={Math.max(x1 - x0, 3)}
-              height={16}
+              y={y + 3}
+              width={Math.max(x1 - x0, 4)}
+              height={18}
               rx={4}
               className="chart-bar-warn"
             />
