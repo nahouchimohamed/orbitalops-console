@@ -1,12 +1,12 @@
-# Keep GitHub language stats focused on application code.
+# Prefer application languages in GitHub's language bar.
+Makefile linguist-vendored
 *.ps1 linguist-vendored
 scripts/** linguist-vendored
 
-# Generated protobuf stubs should not dominate Go stats.
+# Generated code should not dominate stats.
 **/*.pb.go linguist-generated=true
-**/orbit_grpc.pb.go linguist-generated=true
 
-# Explicit language hints for app sources.
-*.go linguist-language=Go
-*.ts linguist-language=TypeScript
-*.tsx linguist-language=TypeScript
+# Ensure app sources are counted.
+*.go linguist-language=Go linguist-detectable=true
+*.ts linguist-language=TypeScript linguist-detectable=true
+*.tsx linguist-language=TypeScript linguist-detectable=true
