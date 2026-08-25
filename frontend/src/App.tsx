@@ -271,7 +271,7 @@ export default function App() {
                 >
                   <strong>{g.name}</strong>
                   <small>
-                    {g.latitude.toFixed(2)}, {g.longitude.toFixed(2)} · el≥{g.min_elevation_deg}°
+                    {g.latitude.toFixed(3)}, {g.longitude.toFixed(3)} · el≥{g.min_elevation_deg}°
                   </small>
                 </button>
               ))}
