@@ -114,7 +114,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
           <span className="kpi-label">Passes (24h)</span>
           <strong className="kpi-value">{allPasses.length}</strong>
           <span className="kpi-meta">
-            avg max el {upcoming.length ? `${avgMaxEl.toFixed(1)}°` : "—"}
+            avg max el {upcoming.length ? `${avgMaxEl.toFixed(1)}° (filtered)` : "—"}
           </span>
         </div>
         <div className="kpi-card">
