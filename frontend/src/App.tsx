@@ -378,8 +378,8 @@ export default function App() {
               <button className="primary" disabled={busy} onClick={() => void createObservation()}>
                 {busy ? "Planning…" : "Request Jakarta AOI"}
               </button>
-              <button className="ghost" onClick={() => void loadBase()}>
-                Refresh
+              <button className="ghost" disabled={busy} onClick={() => void loadBase()}>
+                {busy ? "Working…" : "Refresh"}
               </button>
             </div>
 
