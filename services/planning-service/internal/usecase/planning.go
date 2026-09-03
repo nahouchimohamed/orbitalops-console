@@ -215,6 +215,12 @@ func (s *PlanningService) CreateRequestAndPlan(ctx context.Context, in CreateReq
 
 	_ = s.repo.UpdateRequestStatus(ctx, req.ID, "planned")
 	req.Status = "planned"
+	s.logger.Info("observation planned",
+		"request", req.Name,
+		"priority", req.Priority,
+		"plans", len(plans),
+		"band", domain.PriorityBand(req.Priority),
+	)
 	return req, plans, nil
 }
 
