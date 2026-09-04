@@ -71,7 +71,8 @@ body {
 
 .view-nav button.nav-active {
   background: rgba(61, 184, 255, 0.16);
-  color: var(--text);
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .brand {
