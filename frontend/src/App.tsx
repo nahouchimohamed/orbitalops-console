@@ -9,9 +9,13 @@ import {
   type Satellite,
   type SystemStatus,
 } from "./api";
+import { Dashboard } from "./components/Dashboard";
 import { GroundTrackMap } from "./components/GroundTrackMap";
 
+type View = "dashboard" | "ops";
+
 export default function App() {
+  const [view, setView] = useState<View>("dashboard");
   const [status, setStatus] = useState<SystemStatus | null>(null);
   const [sats, setSats] = useState<Satellite[]>([]);
   const [stations, setStations] = useState<GroundStation[]>([]);
@@ -113,95 +117,122 @@ export default function App() {
           <h1>OrbitalOps Console</h1>
           <span>Spacecraft control lite — constellation mission planning</span>
         </div>
+        <nav className="view-nav" aria-label="Primary">
+          <button
+            type="button"
+            className={view === "dashboard" ? "nav-active" : ""}
+            onClick={() => setView("dashboard")}
+          >
+            Dashboard
+          </button>
+          <button
+            type="button"
+            className={view === "ops" ? "nav-active" : ""}
+            onClick={() => setView("ops")}
+          >
+            Operations
+          </button>
+        </nav>
         <div className="status-pill" data-testid="system-status">
           <span className={`status-dot ${healthy ? "ok" : ""}`} />
           {healthy ? "Planning + Gateway online" : "Waiting for backend…"}
         </div>
       </header>
 
-      <div className="layout">
-        <aside className="panel">
-          <h2>Fleet</h2>
-          <div className="list">
-            {sats.map((s) => (
-              <button
-                key={s.id}
-                className={`list-item ${selectedSat === s.id ? "active" : ""}`}
-                onClick={() => setSelectedSat(s.id)}
-              >
-                <strong>{s.name}</strong>
-                <small>NORAD {s.norad_id ?? "—"}</small>
-              </button>
-            ))}
-          </div>
+      {view === "dashboard" ? (
+        <Dashboard
+          status={status}
+          sats={sats}
+          stations={stations}
+          passes={passes}
+          plans={plans}
+          onOpenOps={() => setView("ops")}
+        />
+      ) : (
+        <div className="layout">
+          <aside className="panel">
+            <h2>Fleet</h2>
+            <div className="list">
+              {sats.map((s) => (
+                <button
+                  key={s.id}
+                  className={`list-item ${selectedSat === s.id ? "active" : ""}`}
+                  onClick={() => setSelectedSat(s.id)}
+                >
+                  <strong>{s.name}</strong>
+                  <small>NORAD {s.norad_id ?? "—"}</small>
+                </button>
+              ))}
+            </div>
 
-          <h2 style={{ marginTop: "1.25rem" }}>Ground stations</h2>
-          <div className="list">
-            {stations.map((g) => (
-              <button
-                key={g.id}
-                className={`list-item ${selectedStation === g.id ? "active" : ""}`}
-                onClick={() => setSelectedStation(g.id)}
-              >
-                <strong>{g.name}</strong>
-                <small>
-                  {g.latitude.toFixed(2)}, {g.longitude.toFixed(2)} · el≥{g.min_elevation_deg}°
-                </small>
-              </button>
-            ))}
-          </div>
-          {error && <div className="error">{error}</div>}
-        </aside>
+            <h2 style={{ marginTop: "1.25rem" }}>Ground stations</h2>
+            <div className="list">
+              {stations.map((g) => (
+                <button
+                  key={g.id}
+                  className={`list-item ${selectedStation === g.id ? "active" : ""}`}
+                  onClick={() => setSelectedStation(g.id)}
+                >
+                  <strong>{g.name}</strong>
+                  <small>
+                    {g.latitude.toFixed(2)}, {g.longitude.toFixed(2)} · el≥{g.min_elevation_deg}°
+                  </small>
+                </button>
+              ))}
+            </div>
+            {error && <div className="error">{error}</div>}
+          </aside>
 
-        <GroundTrackMap track={track} stations={stations} selectedStationId={selectedStation} />
+          <GroundTrackMap track={track} stations={stations} selectedStationId={selectedStation} />
 
-        <aside className="panel">
-          <h2>AOS / LOS passes</h2>
-          <div className="timeline">
-            {(passes ?? []).length === 0 && (
-              <div className="timeline-item">No passes in the next 24h window.</div>
-            )}
-            {(passes ?? []).slice(0, 8).map((p, idx) => (
-              <div className="timeline-item" key={`${p.satellite_id}-${p.aos}-${idx}`}>
-                <strong>{p.satellite_name}</strong>
-                <div className="meta">
-                  AOS {new Date(p.aos).toUTCString()}
-                  <br />
-                  LOS {new Date(p.los).toUTCString()}
-                  <br />
-                  max el {p.max_elevation_deg.toFixed(1)}°
+          <aside className="panel">
+            <h2>AOS / LOS passes</h2>
+            <div className="timeline">
+              {(passes ?? []).length === 0 && (
+                <div className="timeline-item">No passes in the next 24h window.</div>
+              )}
+              {(passes ?? []).slice(0, 8).map((p, idx) => (
+                <div className="timeline-item" key={`${p.satellite_id}-${p.aos}-${idx}`}>
+                  <strong>{p.satellite_name}</strong>
+                  <div className="meta">
+                    AOS {new Date(p.aos).toUTCString()}
+                    <br />
+                    LOS {new Date(p.los).toUTCString()}
+                    <br />
+                    max el {p.max_elevation_deg.toFixed(1)}°
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <h2 style={{ marginTop: "1.25rem" }}>Observation planning</h2>
-          <div className="btn-row">
-            <button className="primary" disabled={busy} onClick={() => void createObservation()}>
-              {busy ? "Planning…" : "Request Jakarta AOI"}
-            </button>
-            <button className="ghost" onClick={() => void loadBase()}>
-              Refresh
-            </button>
-          </div>
+            <h2 style={{ marginTop: "1.25rem" }}>Observation planning</h2>
+            <div className="btn-row">
+              <button className="primary" disabled={busy} onClick={() => void createObservation()}>
+                {busy ? "Planning…" : "Request Jakarta AOI"}
+              </button>
+              <button className="ghost" onClick={() => void loadBase()}>
+                Refresh
+              </button>
+            </div>
 
-          <div className="timeline">
-            {(plans ?? []).slice(0, 6).map((p) => (
-              <div className="timeline-item" key={p.id}>
-                <strong>
-                  {p.satellite_name ?? p.satellite_id.slice(0, 8)} · {p.status}
-                </strong>
-                <div className="meta">
-                  {new Date(p.start_time).toISOString()} → {new Date(p.end_time).toISOString()}
+            <div className="timeline">
+              {(plans ?? []).slice(0, 6).map((p) => (
+                <div className="timeline-item" key={p.id}>
+                  <strong>
+                    {p.satellite_name ?? p.satellite_id.slice(0, 8)} · {p.status}
+                  </strong>
+                  <div className="meta">
+                    {new Date(p.start_time).toISOString()} → {new Date(p.end_time).toISOString()}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          <h2 style={{ marginTop: "1.25rem" }}>Command sequence export</h2>
-          <pre className="cmd">{exportJSON}</pre>
-        </aside>
-      </div>
+            <h2 style={{ marginTop: "1.25rem" }}>Command sequence export</h2>
+            <pre className="cmd">{exportJSON}</pre>
+          </aside>
+        </div>
+      )}
     </div>
   );
 }
