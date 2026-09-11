@@ -12,8 +12,8 @@ const INITIAL_VIEW = {
   longitude: 80.0,
   latitude: 15.0,
   zoom: 1.85,
-  pitch: 20,
-  bearing: -10,
+  pitch: 28,
+  bearing: -12,
 };
 
 type Props = {
