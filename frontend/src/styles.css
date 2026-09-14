@@ -657,3 +657,11 @@ button.primary:active:not(:disabled) {
 .chart-panel:hover {
   border-color: rgba(61, 184, 255, 0.45);
 }
+
+.timeline-item {
+  transition: border-color 120ms ease, transform 120ms ease;
+}
+.timeline-item:hover {
+  border-color: rgba(61, 184, 255, 0.4);
+  transform: translateY(-1px);
+}
