@@ -5,6 +5,14 @@ import type {
   Satellite,
   SystemStatus,
 } from "../api";
+import {
+  ContactGantt,
+  ContactLoadHistogram,
+  ElevationBars,
+  FleetOrbitSchematic,
+  PlanStatusDonut,
+  StationUtilization,
+} from "./DashboardCharts";
 
 type Props = {
   status: SystemStatus | null;
@@ -30,9 +38,12 @@ function statusLabel(status: SystemStatus | null): { label: string; ok: boolean 
 
 export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: Props) {
   const health = statusLabel(status);
-  const upcoming = (passes ?? []).slice(0, 5);
+  const allPasses = passes ?? [];
+  const upcoming = allPasses.slice(0, 5);
   const recentPlans = (plans ?? []).slice(0, 5);
-  const plannedCount = (plans ?? []).filter((p) => p.status === "planned" || p.status === "scheduled").length;
+  const plannedCount = (plans ?? []).filter(
+    (p) => p.status === "planned" || p.status === "scheduled",
+  ).length;
   const avgMaxEl =
     upcoming.length > 0
       ? upcoming.reduce((acc, p) => acc + p.max_elevation_deg, 0) / upcoming.length
@@ -43,7 +54,10 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: 
       <div className="dash-hero">
         <div>
           <h2>Mission overview</h2>
-          <p>Constellation health, contact windows, and imaging queue at a glance.</p>
+          <p>
+            Constellation health, contact analytics, and imaging queue — charts update from live
+            planning and orbit services.
+          </p>
         </div>
         <button type="button" className="primary" onClick={onOpenOps}>
           Open operations map
@@ -63,7 +77,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: 
         </div>
         <div className="kpi-card">
           <span className="kpi-label">Passes (24h)</span>
-          <strong className="kpi-value">{(passes ?? []).length}</strong>
+          <strong className="kpi-value">{allPasses.length}</strong>
           <span className="kpi-meta">
             avg max el {upcoming.length ? `${avgMaxEl.toFixed(1)}°` : "—"}
           </span>
@@ -73,6 +87,33 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps }: 
           <strong className="kpi-value">{(plans ?? []).length}</strong>
           <span className="kpi-meta">{plannedCount} queued / scheduled</span>
         </div>
+      </div>
+
+      <div className="chart-grid">
+        <section className="dash-section chart-panel">
+          <h3>Pass elevation</h3>
+          <ElevationBars passes={allPasses} />
+        </section>
+        <section className="dash-section chart-panel">
+          <h3>Contact load (UTC)</h3>
+          <ContactLoadHistogram passes={allPasses} />
+        </section>
+        <section className="dash-section chart-panel">
+          <h3>Contact timeline</h3>
+          <ContactGantt passes={allPasses} />
+        </section>
+        <section className="dash-section chart-panel">
+          <h3>Plan status mix</h3>
+          <PlanStatusDonut plans={plans ?? []} />
+        </section>
+        <section className="dash-section chart-panel">
+          <h3>Station utilization</h3>
+          <StationUtilization passes={allPasses} stations={stations} />
+        </section>
+        <section className="dash-section chart-panel">
+          <h3>Fleet schematic</h3>
+          <FleetOrbitSchematic sats={sats} />
+        </section>
       </div>
 
       <div className="dash-columns">
