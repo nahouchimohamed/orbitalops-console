@@ -82,7 +82,7 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
             />
           </label>
           <button type="button" className="primary" onClick={onOpenOps}>
-            Open operations map
+            Open ops map & contacts
           </button>
         </div>
       </div>
