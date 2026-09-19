@@ -175,14 +175,20 @@ export default function App() {
           <button
             type="button"
             className={view === "dashboard" ? "nav-active" : ""}
-            onClick={() => setView("dashboard")}
+            onClick={() => {
+              setError(null);
+              setView("dashboard");
+            }}
           >
             Dashboard
           </button>
           <button
             type="button"
             className={view === "ops" ? "nav-active" : ""}
-            onClick={() => setView("ops")}
+            onClick={() => {
+              setError(null);
+              setView("ops");
+            }}
           >
             Operations
           </button>
