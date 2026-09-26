@@ -1,8 +1,8 @@
 package domain
 
 func ClampPriority(p int) int {
-	if p < 1 {
-		return 1
+	if p <= 0 {
+		return 3
 	}
 	if p > 5 {
 		return 5
