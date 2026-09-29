@@ -665,3 +665,8 @@ button.primary:active:not(:disabled) {
   border-color: rgba(61, 184, 255, 0.4);
   transform: translateY(-1px);
 }
+
+select.text-input {
+  cursor: pointer;
+  padding-right: 0.5rem;
+}
