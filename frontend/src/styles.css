@@ -434,9 +434,9 @@ pre.cmd {
 }
 
 .chart-orbit-ring {
-  stroke: rgba(61, 184, 255, 0.35);
-  stroke-width: 1;
-  stroke-dasharray: 3 4;
+  stroke: rgba(61, 184, 255, 0.5);
+  stroke-width: 1.25;
+  stroke-dasharray: 4 5;
 }
 
 .chart-sat-dot {
