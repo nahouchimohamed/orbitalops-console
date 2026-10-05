@@ -493,7 +493,7 @@ pre.cmd {
   border: 1px solid var(--panel-border);
   color: var(--warn);
   background: rgba(240, 195, 90, 0.08);
-  text-transform: lowercase;
+  text-transform: none;
 }
 
 .health-badge.ok {
