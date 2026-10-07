@@ -346,7 +346,11 @@ export default function App() {
             </div>
             <div className="timeline">
               {visiblePasses.length === 0 && (
-                <div className="timeline-item">No passes in the next 24h window.</div>
+                <div className="timeline-item">
+                  {(passes ?? []).length === 0
+                    ? "No passes in the selected horizon."
+                    : "No passes meet the current elevation filter."}
+                </div>
               )}
               {visiblePasses.slice(0, 8).map((p, idx) => (
                 <div className="timeline-item" key={`${p.satellite_id}-${p.aos}-${idx}`}>
