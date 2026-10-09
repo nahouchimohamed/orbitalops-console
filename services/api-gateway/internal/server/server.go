@@ -64,13 +64,17 @@ func New(cfg Config, logger *slog.Logger) (http.Handler, func(), error) {
 	r.Get("/readyz", func(w http.ResponseWriter, r *http.Request) {
 		// Best-effort planning health probe
 		client := &http.Client{Timeout: 2 * time.Second}
+		start := time.Now()
 		resp, err := client.Get(cfg.PlanningURL + "/readyz")
 		if err != nil {
-			writeJSON(w, http.StatusServiceUnavailable, map[string]string{"status": "not_ready", "error": err.Error()})
+			writeJSON(w, http.StatusServiceUnavailable, map[string]any{"status": "not_ready", "error": err.Error()})
 			return
 		}
 		defer resp.Body.Close()
-		writeJSON(w, http.StatusOK, map[string]string{"status": "ready"})
+		writeJSON(w, http.StatusOK, map[string]any{
+			"status":              "ready",
+			"planning_latency_ms": time.Since(start).Milliseconds(),
+		})
 	})
 
 	// Aggregate health for ops dashboard
