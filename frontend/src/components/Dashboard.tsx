@@ -66,8 +66,8 @@ export function Dashboard({ status, sats, stations, passes, plans, onOpenOps, mi
         <div>
           <h2>Mission overview</h2>
           <p>
-            Constellation health, contact analytics, and imaging queue — charts update from live
-            planning and orbit services.
+            Constellation health, contact analytics, and imaging queue — tune elevation filters to
+            focus charts on operationally useful contacts.
           </p>
         </div>
         <div className="dash-hero-actions">
