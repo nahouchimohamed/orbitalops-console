@@ -670,3 +670,9 @@ select.text-input {
   cursor: pointer;
   padding-right: 0.5rem;
 }
+
+.panel h2 + .filter-row,
+.panel h2 + .btn-row,
+.panel h2 + .text-input {
+  margin-top: 0.15rem;
+}
