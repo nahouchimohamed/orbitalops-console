@@ -35,7 +35,11 @@ export default function App() {
   const [plans, setPlans] = useState<ImagingPlan[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [minElevation, setMinElevation] = useState(5);
+  const [minElevation, setMinElevation] = useState(() => {
+    const raw = localStorage.getItem("orbitalops.minEl");
+    const n = raw ? Number(raw) : 5;
+    return Number.isFinite(n) ? n : 5;
+  });
   const [sortMode, setSortMode] = useState<"aos" | "elevation">("aos");
   const [fleetQuery, setFleetQuery] = useState("");
   const [passHours, setPassHours] = useState(24);
@@ -315,7 +319,11 @@ export default function App() {
                 min={0}
                 max={40}
                 value={minElevation}
-                onChange={(e) => setMinElevation(Number(e.target.value))}
+                onChange={(e) => {
+                  const v = Number(e.target.value);
+                  setMinElevation(v);
+                  localStorage.setItem("orbitalops.minEl", String(v));
+                }}
               />
             </label>
             <div className="btn-row">
