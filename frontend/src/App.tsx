@@ -224,7 +224,10 @@ export default function App() {
           passes={passes}
           plans={plans}
           minElevation={minElevation}
-          onMinElevationChange={setMinElevation}
+          onMinElevationChange={(v) => {
+            setMinElevation(v);
+            localStorage.setItem("orbitalops.minEl", String(v));
+          }}
           planStatusFilter={planStatusFilter}
           onOpenOps={() => setView("ops")}
         />
