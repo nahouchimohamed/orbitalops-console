@@ -283,7 +283,7 @@ export function StationUtilization({
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="chart-svg" role="img" aria-label="Station utilization">
       <text x={0} y={14} className="chart-axis-label">
-        Passes per station (24h)
+        Passes per station (filtered)
       </text>
       {rows.map((r, i) => {
         const y = 24 + i * rowH;
