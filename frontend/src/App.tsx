@@ -151,6 +151,7 @@ export default function App() {
   }, [plans]);
 
   async function createObservation() {
+    if (busy) return;
     setBusy(true);
     try {
       setError(null);
