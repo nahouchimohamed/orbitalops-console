@@ -676,3 +676,7 @@ select.text-input {
 .panel h2 + .text-input {
   margin-top: 0.15rem;
 }
+
+.timeline-item:has(.health-badge.ok) {
+  border-color: rgba(92, 224, 178, 0.35);
+}
