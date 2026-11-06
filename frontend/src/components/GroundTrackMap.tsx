@@ -20,9 +20,10 @@ type Props = {
   track: GroundTrack | null;
   stations: GroundStation[];
   selectedStationId: string | null;
+  minElevation?: number;
 };
 
-export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
+export function GroundTrackMap({ track, stations, selectedStationId, minElevation = 5 }: Props) {
   const layers = useMemo(() => {
     const path =
       track && track.samples.length > 1
@@ -69,7 +70,7 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
           lineWidthMinPixels: 1,
           stroked: true,
           filled: true,
-          getRadius: 450000,
+          getRadius: Math.max(250000, 550000 - minElevation * 8000),
           radiusMinPixels: 18,
         })
       : null;
@@ -85,7 +86,7 @@ export function GroundTrackMap({ track, stations, selectedStationId }: Props) {
     });
 
     return [horizon, path, satPoint, gs].filter(Boolean) as Layer[];
-  }, [track, stations, selectedStationId]);
+  }, [track, stations, selectedStationId, minElevation]);
 
   return (
     <div className="map-wrap">
