@@ -680,3 +680,9 @@ select.text-input {
 .timeline-item:has(.health-badge.ok) {
   border-color: rgba(92, 224, 178, 0.35);
 }
+
+@media (min-width: 1400px) {
+  .layout {
+    grid-template-columns: 340px minmax(0, 1fr) 360px;
+  }
+}
