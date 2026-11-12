@@ -112,7 +112,7 @@ export function ContactLoadHistogram({ passes }: { passes: PassWindow[] }) {
               width={barW}
               height={Math.max(bh, c > 0 ? 2 : 0)}
               rx={2}
-              className={c > 0 ? "chart-bar-teal" : "chart-bar-muted"}
+              className={c <= 0 ? "chart-bar-muted" : c === peak ? "chart-bar-warn" : "chart-bar-teal"}
             />
             {h % 3 === 0 && (
               <text x={x + barW / 2} y={H - 8} textAnchor="middle" className="chart-tick">
