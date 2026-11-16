@@ -12,7 +12,7 @@ func ValidateAOIGeoJSON(raw json.RawMessage) error {
 	}
 	coords := extractLonLat(gj)
 	if len(coords) < 3 {
-		return fmt.Errorf("AOI needs a polygon ring")
+		return fmt.Errorf("invalid AOI: polygon ring required")
 	}
 	minLon, maxLon := coords[0][0], coords[0][0]
 	minLat, maxLat := coords[0][1], coords[0][1]
