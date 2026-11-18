@@ -686,3 +686,11 @@ select.text-input {
     grid-template-columns: 340px minmax(0, 1fr) 360px;
   }
 }
+
+.dash-columns .dash-section {
+  display: flex;
+  flex-direction: column;
+}
+.dash-columns .timeline {
+  flex: 1;
+}
