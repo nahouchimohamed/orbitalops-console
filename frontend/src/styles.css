@@ -694,3 +694,9 @@ select.text-input {
 .dash-columns .timeline {
   flex: 1;
 }
+
+button.ghost.nav-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(61, 184, 255, 0.1);
+}
