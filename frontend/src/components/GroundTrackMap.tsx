@@ -21,9 +21,10 @@ type Props = {
   stations: GroundStation[];
   selectedStationId: string | null;
   minElevation?: number;
+  trackHours?: number;
 };
 
-export function GroundTrackMap({ track, stations, selectedStationId, minElevation = 5 }: Props) {
+export function GroundTrackMap({ track, stations, selectedStationId, minElevation = 5, trackHours }: Props) {
   const layers = useMemo(() => {
     const path =
       track && track.samples.length > 1
@@ -105,7 +106,7 @@ export function GroundTrackMap({ track, stations, selectedStationId, minElevatio
       </DeckGL>
       <div className="map-overlay">
         {track && track.samples.length > 1
-          ? `${track.satellite_name}: ${track.samples.length} samples · ${new Date(track.samples[0].time).toUTCString().slice(17, 25)}–${new Date(track.samples[track.samples.length - 1].time).toUTCString().slice(17, 25)} UTC`
+          ? `${track.satellite_name}: ${track.samples.length} samples · ${new Date(track.samples[0].time).toUTCString().slice(17, 25)}–${new Date(track.samples[track.samples.length - 1].time).toUTCString().slice(17, 25)} UTC${trackHours ? ` · ${trackHours.toFixed(1)}h` : ""}`
           : track
             ? `${track.satellite_name}: awaiting samples`
             : "Select a satellite to render ground track"}

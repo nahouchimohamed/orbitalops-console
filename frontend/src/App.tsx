@@ -297,7 +297,7 @@ export default function App() {
             )}
           </aside>
 
-          <GroundTrackMap track={track} stations={stations} selectedStationId={selectedStation} minElevation={minElevation} />
+          <GroundTrackMap track={track} stations={stations} selectedStationId={selectedStation} minElevation={minElevation} trackHours={trackHours} />
 
           <aside className="panel">
             <h2>AOS / LOS passes</h2>
